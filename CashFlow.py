@@ -1,9 +1,14 @@
 import pandas as pd
 
-cashflow = pd.read_csv('PF_Pivot1.csv', delimiter=';')
-print(cashflow.head(10))
+cf = pd.read_csv('PF_Pivot1.csv', delimiter=';')
+print(cf.head(10))
 
-def blank_cell():
+#crea nuova variabile che contiene lelenco fornitori
+f = cf.loc[0:,'Fornitore']
+'''La modifica fianle non ustilizzerà la nuova variabile ma la modifica sarà 
+fatta direttamente nelal tabella'''
+
+def blank_cell(f):
     '''Funzione da completare per la sostituzione dei nomi nella
     colonna fonritori dove le celle sono vuote 
     La funzione va impelementara è stato testato solo il ciclo '''
