@@ -4,18 +4,26 @@ cf = pd.read_csv('PF_Pivot1.csv', delimiter=';')
 print(cf.head(10))
 
 #crea nuova variabile che contiene lelenco fornitori
-f = cf.loc[0:,'Fornitore']
+#f = cf.loc[0:,'Fornitore']
 '''La modifica fianle non ustilizzerà la nuova variabile ma la modifica sarà 
 fatta direttamente nelal tabella'''
 
-def blank_cell(f):
-    '''Funzione da completare per la sostituzione dei nomi nella
-    colonna fonritori dove le celle sono vuote 
-    La funzione va impelementara è stato testato solo il ciclo '''
-    for i in range(len(f)):
-        if not pd.isna(f[i]):
-            cp=f[i]
-            print(f[i])
-        else:
-            f[i]=cp
-            #print('vuota')
+def blank_cell(cf):
+    '''Funzione comoleta per la sostituzione dei nomi nella
+    colonna Fornitore dove le celle sono vuote la funzione
+    riporta il nome della prima cella in alto fino a che
+    non trova un nuova cella vuota '''
+for i in range(len(cf)):
+    if not pd.isna(cf.loc[i, 'Fornitore']):
+        cp=cf.loc[i, 'Fornitore']
+        print(cf.loc[i, 'Fornitore'])
+    else:
+        cf.loc[i, 'Fornitore']=cp
+        #print('vuota')
+
+'''Creazione della lista di modi di pagamento unico 
+attraverso l'uso di se()
+la variabole pag è l'elenco unico dei tipi di pagamento'''
+
+pag = set(cf.loc[0:,'Pagamento Documento'])
+
