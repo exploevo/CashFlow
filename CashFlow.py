@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 
 cf = pd.read_csv('PF_Pivot1.csv', delimiter=';')
 print(cf.head(10))
@@ -27,3 +28,12 @@ la variabole pag è l'elenco unico dei tipi di pagamento'''
 
 pag = set(cf.loc[0:,'Pagamento Documento'])
 
+#DOTO List
+'''
+- creazione della colonna mese di pagamento in cui si indica il mese di pagamento. 
+La colonna è popolata con una funzione che usa i valori nella colonna OrAcq - Data Effettiva Evasione e
+se guesta è vuota dalla colonna OrAcq - Data Prevista Evasione e estrare il mese usando il modulo datetime
+- una volta creata la tabella si possono creare delle funzioni di aggregazione che abbia come
+ il nome del fornitore il tipo di pagamento i mesi dell'anno e il totale
+- nelle righe i nomi dei fornitori con gli importi aggregati e sommasi per mese e tipo di pagamento
+'''
