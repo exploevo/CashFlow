@@ -37,3 +37,8 @@ se guesta è vuota dalla colonna OrAcq - Data Prevista Evasione e estrare il mes
  il nome del fornitore il tipo di pagamento i mesi dell'anno e il totale
 - nelle righe i nomi dei fornitori con gli importi aggregati e sommasi per mese e tipo di pagamento
 '''
+
+'''La formula per raggruppare per colonne e fare la somma dei valori 
+questa stringa ci serve per raggruppare i fornitori per data e fare la somma dei valori indicati in sum'''
+
+cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione']).sum('OrAcq - Importo Generale Evaso 1')
