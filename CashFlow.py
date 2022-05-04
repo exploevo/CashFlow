@@ -41,4 +41,17 @@ se guesta è vuota dalla colonna OrAcq - Data Prevista Evasione e estrare il mes
 '''La formula per raggruppare per colonne e fare la somma dei valori 
 questa stringa ci serve per raggruppare i fornitori per data e fare la somma dei valori indicati in sum'''
 
-cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione']).sum('OrAcq - Importo Generale Evaso 1')
+cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione']).sum()
+
+#un modo per scegliere la colonna da sommare
+cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione'], as_index=False)['OrAcq - Importo Generale Evaso 1'].sum()
+
+'''è necessario convertire i numeri delle colonne da stringhe a int per farlo è possibile usare 
+la funzione che segue'''
+def convert_str_to_num(cf):
+    for i in range(len(cf)):
+        s=cf.loc[i, 'OrAcq - Importo Generale Evaso 1'].replace('.','').replace(',','.')
+    cf.loc[i, 'OrAcq - Importo Generale Evaso 1']=float(s)
+    #print(cf.loc[i, 'OrAcq - Importo Generale Evaso 1'])
+
+'''opo questo è possibile usare le funzione groupby per sommare gli importi '''
