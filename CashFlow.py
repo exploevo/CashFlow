@@ -55,4 +55,4 @@ df.drop('Articolo', inplace=True, axis=1)
 
 '''
 
-    
+cf.pivot_table(values='OrAcq - Importo Generale Evaso 1', index=['Fornitore','Pagamento Documento'], columns=['Mese','Anno'], aggfunc='first', fill_value=0, sort=True)
