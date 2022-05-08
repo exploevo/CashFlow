@@ -1,7 +1,10 @@
 import pandas as pd
 import datetime
 
-cf = pd.read_csv('PF_Pivot1.csv', delimiter=';')
+#cf = pd.read_csv('PF_Pivot1.csv', delimiter=';')
+#Questa forma permette di trasformare le colonne numeriche in int con punto per decimale e senza punti per migliaia
+cf = pd.read_csv("PF_Pivot1.csv", sep=';', header=0, skip_blank_lines=True, decimal=',',thousands='.')
+
 print(cf.head(10))
 
 def blank_cell(cf):
@@ -42,12 +45,14 @@ cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione']).sum()
 le righe'''
 cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione'], as_index=False)['OrAcq - Importo Generale Evaso 1'].sum()
 
-'''è necessario convertire i numeri delle colonne da stringhe a int per fare la somma
- per farlo è possibile usare la funzione che segue'''
-def convert_str_to_num(cf):
-    for i in range(len(cf)):
-        s=cf.loc[i, 'OrAcq - Importo Generale Evaso 1'].replace('.','').replace(',','.')
-    cf.loc[i, 'OrAcq - Importo Generale Evaso 1']=float(s)
-    #print(cf.loc[i, 'OrAcq - Importo Generale Evaso 1'])
-
 '''dopo questo è possibile usare le funzione groupby per sommare gli importi '''
+
+'''le colonen da dropapre perché non mi servono
+- Articolo, OrAcq - Numero Documento, Causale Documento, 
+
+il comando prr dropapre in maniera permanente in pandas è:
+df.drop('Articolo', inplace=True, axis=1)
+
+'''
+
+    
