@@ -43,6 +43,7 @@ cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione']).sum()
 
 '''questo è il modo per scegliere la colonna da sommare, as_index=False server per riportare il nome del fornitore su tutte
 le righe'''
+
 cf.groupby(['Fornitore','OrAcq - Data Prevista Evasione'], as_index=False)['OrAcq - Importo Generale Evaso 1'].sum()
 
 '''dopo questo è possibile usare le funzione groupby per sommare gli importi '''
@@ -55,4 +56,34 @@ df.drop('Articolo', inplace=True, axis=1)
 
 '''
 
-cf.pivot_table(values='OrAcq - Importo Generale Evaso 1', index=['Fornitore','Pagamento Documento'], columns=['Mese','Anno'], aggfunc='first', fill_value=0, sort=True)
+#Estrazione mesi da date
+date_effettive = cf['OrAcq - Data Effettiva Evasione'].values
+date_previste = cf['OrAcq - Data Prevista Evasione'].values
+def getMesiAnniFromDate(date_effettive, date_previste):
+    mesi = []
+    anni = []
+    for i, de in enumerate(date_effettive):
+        if str(de) != 'nan' and str(de) != 'Non definito':
+            spl = de.split()
+            mesi.append(spl[1])
+            anni.append(int(spl[2]))
+        else:
+            dp = date_previste[i]
+            if str(dp) != 'nan':
+                spl = dp.split()
+                mesi.append(spl[1])
+                anni.append(int(spl[2]))
+            else:
+                mesi.append('nan')
+                anni.append(-1)
+
+    return mesi, anni
+   
+mesi, anni = getMesiAnniFromDate(date_effettive, date_previste)
+cf['Anno'] = anni
+
+
+piv = cf.pivot_table(values='OrAcq - Importo Generale Evaso 1', index=['Fornitore','Pagamento Documento'], columns=['Mese','Anno'], aggfunc='first', fill_value=0, sort=True)
+
+#per ordinare le colonne in modo corretto
+piv = piv.reindex(columns=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic','nan'])
