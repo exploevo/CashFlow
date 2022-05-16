@@ -5,6 +5,13 @@ import pandas as pd
 from xml.parsers.expat import ExpatError
 from pathlib import Path
 
+#Dichiarazioni delle Variabili di lavoro
+xml_dir='allegati/xmlfiles/EMESSE/'
+dst_path="allegati/xmlfiles/INVALIDI/"
+ex_dic={'Denominazione_emit':[],'CodiceFiscale_emit':[],'IVA_emit':[], 'Deniminazione_comm':[]
+        ,'CodiceFiscale_comm':[],'IVA_comm':[]}
+non_validi=[]
+
 def file_xml_list(path):
     #legge ricursivamente i file nella direcotry data
     for root, dirs, files in os.walk(path, topdown = True):
@@ -22,7 +29,6 @@ def nome_file(path):
     else:
         print('Path does not refer to a valid File\nProvide a correct path to File!')
    
-non_validi=[]
 def file_xml_read(path):
     #NB nella versione defintiva la variabile va in radice
     #legge il file xml ed estrae i dai in un DataFrame
@@ -34,11 +40,13 @@ def file_xml_read(path):
             #resta da inserie i dati del dataframe in un dizionario (e successivamente in un db)
     except xmltodict.expat.ExpatError:
         #se non risce ad aprire il file aggiunge il nome ad una lista
-        non_validi.append(nome_file(path))
-        print (non_validi)
+        #Aggiunta filtro se file .DS (apple)
+        if name.startswith('.DS_'):
+            pass
+        else:
+            non_validi.append(nome_file(path))
+            print (non_validi) 
 
-ex_dic={'Denominazione_emit':[],'CodiceFiscale_emit':[],'IVA_emit':[], 'Deniminazione_comm':[]
-        ,'CodiceFiscale_comm':[],'IVA_comm':[]}
 def dict_Header(df):
     #TODO inderie il controllo tra denominazione (aziende) e Nome Cognome (ditte individuali)
     try:
@@ -76,9 +84,6 @@ def dict_Header(df):
         #print(comm_n+' '+comm_c)
     
     
-xml_dir='allegati/xmlfiles/EMESSE/'
-ex_dic={'Denominazione_emit':[],'CodiceFiscale_emit':[],'IVA_emit':[], 'Deniminazione_comm':[]
-        ,'CodiceFiscale_comm':[],'IVA_comm':[]}
 
 def dict_xml_create(path):
        for root, dirs, files in os.walk(path, topdown = True):
