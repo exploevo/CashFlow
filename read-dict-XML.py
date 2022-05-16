@@ -41,20 +41,40 @@ ex_dic={'Denominazione_emit':[],'CodiceFiscale_emit':[],'IVA_emit':[], 'Denimina
         ,'CodiceFiscale_comm':[],'IVA_comm':[]}
 def dict_Header(df):
     #TODO inderie il controllo tra denominazione (aziende) e Nome Cognome (ditte individuali)
-    #estraggo i valori dal Dataframe da inserire nel Dizionario   
-    emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['Anagrafica']['Denominazione']
-    cf_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['CodiceFiscale']
-    piva_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
-    comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['Anagrafica']['Denominazione']
-    cf_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['CodiceFiscale']
-    piva_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
-    #Inserisco i valori nel Dizionario
-    ex_dic['Denominazione_emit'].append(emit)
-    ex_dic['CodiceFiscale_emit'].append(cf_emit)
-    ex_dic['IVA_emit'].append(piva_emit)
-    ex_dic['Deniminazione_comm'].append(comm)
-    ex_dic['CodiceFiscale_comm'].append(cf_comm)
-    ex_dic['IVA_comm'].append(piva_comm)
+    try:
+        #estraggo i valori dal Dataframe da inserire nel Dizionario   
+        emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['Anagrafica']['Denominazione']
+        cf_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['CodiceFiscale']
+        piva_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
+        comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['Anagrafica']['Denominazione']
+        cf_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['CodiceFiscale']
+        piva_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
+        #Inserisco i valori nel Dizionario
+        ex_dic['Denominazione_emit'].append(emit)
+        ex_dic['CodiceFiscale_emit'].append(cf_emit)
+        ex_dic['IVA_emit'].append(piva_emit)
+        ex_dic['Deniminazione_comm'].append(comm)
+        ex_dic['CodiceFiscale_comm'].append(cf_comm)
+        ex_dic['IVA_comm'].append(piva_comm)
+    except KeyError as e:
+        #Se non esiste il campo Denominazione prendo il Nome e il Cognome
+        emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['Anagrafica']['Denominazione']
+        cf_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['CodiceFiscale']
+        piva_emit=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CedentePrestatore']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
+        comm_n=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['Anagrafica']['Nome']
+        comm_c=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['Anagrafica']['Cognome']
+        cf_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['CodiceFiscale']
+        piva_comm=df['p:FatturaElettronica']['FatturaElettronicaHeader']['CessionarioCommittente']['DatiAnagrafici']['IdFiscaleIVA']['IdCodice']
+        #Inserisco i valori nel Dizionario
+        ex_dic['Denominazione_emit'].append(emit)
+        ex_dic['CodiceFiscale_emit'].append(cf_emit)
+        ex_dic['IVA_emit'].append(piva_emit)
+        ex_dic['Deniminazione_comm'].append(comm_n+' '+comm_c)
+        ex_dic['CodiceFiscale_comm'].append(cf_comm)
+        ex_dic['IVA_comm'].append(piva_comm)
+        #print ('I got a KeyError - reason "%s"' % str(e))
+        #print(comm_n+' '+comm_c)
+    
     
 xml_dir='allegati/xmlfiles/EMESSE/'
 ex_dic={'Denominazione_emit':[],'CodiceFiscale_emit':[],'IVA_emit':[], 'Deniminazione_comm':[]
